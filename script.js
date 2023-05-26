@@ -6,8 +6,6 @@ function getComputerChoice() {
     return choices[randomIndex];
 }
 
-console.log(getComputerChoice())
-
 /* function that plays a single round of rock paper scissors */
 
 function playRound(playerSelection, computerSelection) {
@@ -32,46 +30,45 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-/* define player and computer selection */
-/*const playerSelection = 'rock';
-const computerSelection = getComputerChoice();
+/* function that keeps score and declares a winner when one player reaches 5 points */
 
-console.log(playRound(playerSelection, computerSelection)); */
+let playerScore = 0;
+let computerScore = 0;
 
+function game(playerSelection) {
+    let computerSelection = getComputerChoice() 
+    let result = playRound(playerSelection, computerSelection); 
 
-/* function that plays a 5 round game, keeps a score and declares a winner */
+    let resultDiv = document.getElementById('result'); 
+    resultDiv.textContent = `Round Result: ${result}`;
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let round = 1; round <=5; round++) {
-        let playerSelection = prompt('Round' + round + ': Rock, Paper, or Scissors?');
-
-        while (playerSelection !== 'rock' && playerSelection !== 'paper' && playerSelection !== 'scissors') {
-            playerSelection = prompt('Please enter a valid option: Rock, Paper, Scissors?').toLowerCase();
-        }
-
-        let computerSelection = getComputerChoice();
-        let result = playRound(playerSelection, computerSelection);
-        console.log(`Round ${round}: ${result}`);
-
-        if (result.includes('Win')) {
-            playerScore++;
-        } else if (result.includes('Lose')) {
-            computerScore++;
-        }
+    if (result.includes('Win')) {
+        playerScore++;
+    } else if (result.includes('Lose')) {
+        computerScore++;
     }
 
-    console.log(`\nFinal Score: You = ${playerScore}, Computer = ${computerScore}\n`);
+    let scoreDiv = document.getElementById('score'); 
+    scoreDiv.textContent= `Score: You = ${playerScore}, Computer = ${computerScore}`; 
 
-    if(playerScore > computerScore) {
-        console.log('Congrats! You won!');
-    } else if (playerScore < computerScore) {
-        console.log('Your Lose! Looks like the computers are beating humans yet again!');
-    } else {
-        console.log('It\'s a tie!');
+    if (playerScore === 5 || computerScore === 5) {
+        let winner = playerScore === 5 ? 'You won!' : 'You lose! The computer won!';
+        resultDiv.textContent += `\n${winner}`; 
     }
 }
 
-game(); 
+/* Add event listeners to buttons */
+
+document.getElementById('rock').addEventListener('click', function() {
+    game('rock'); 
+});
+
+document.getElementById('paper').addEventListener('click', function() {
+    game('paper'); 
+});
+
+document.getElementById('scissors').addEventListener('click', function() {
+    game('scissors'); 
+});
+
+console.log(playerScore); 
